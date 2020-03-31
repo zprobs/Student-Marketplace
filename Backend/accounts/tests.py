@@ -83,3 +83,14 @@ class ViewsTestCases(TestCase):
         response = self.client.post(reverse('register'), request)
 
         self.assertEqual(response.status_code, 200)
+
+    def test_login_success(self):
+        User.objects.create_user(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, SCHOOL, ADDRESS, PHONE)
+        request = {
+            'username': EMAIL,
+            'password': PASSWORD
+        }
+
+        response = self.client.post(reverse('login'), request)
+
+        self.assertEqual(response.status_code, 200)
