@@ -23,3 +23,6 @@
 ### Useful apps
 1. Postman: to test APIs
 2. DB Browser for SQLite: you can visualize data in db.sqlite3 from an app
+
+### Useful guides
+1. knox authentication and react: https://medium.com/technest/implement-user-auth-in-a-django-react-app-with-knox-fc56cdc9211c
