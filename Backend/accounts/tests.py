@@ -1,12 +1,8 @@
-from unittest.mock import Mock
-
-from django.contrib.auth.hashers import make_password
 from django.test import TestCase, Client
 from django.urls import reverse
 
 from accounts.models import User
 from accounts.serializers import UserSerializer
-from accounts.views import RegisterView
 
 ID = 1
 EMAIL = 'test_email@test.com'
@@ -66,7 +62,7 @@ class SerializersTestCases(TestCase):
         self.assertEqual(actual_data['phone'], self.expected_data['phone'])
 
     def tearDown(self):
-        self.user.delete();
+        self.user.delete()
 
 
 class ViewsTestCases(TestCase):
