@@ -81,8 +81,19 @@ class ViewsTestCases(TestCase):
         }
 
         response = self.client.post(reverse('register'), request)
+        content = response.content.decode('utf-8')
 
         self.assertEqual(response.status_code, 200)
+        self.assertIn('user', content)
+        self.assertIn('id', content)
+        self.assertIn(EMAIL, content)
+        self.assertNotIn(PASSWORD, content)
+        self.assertIn(FIRST_NAME, content)
+        self.assertIn(LAST_NAME, content)
+        self.assertIn(SCHOOL, content)
+        self.assertIn(ADDRESS, content)
+        self.assertIn(PHONE, content)
+        self.assertIn('token', content)
 
     def test_login_success(self):
         User.objects.create_user(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, SCHOOL, ADDRESS, PHONE)
@@ -92,5 +103,16 @@ class ViewsTestCases(TestCase):
         }
 
         response = self.client.post(reverse('login'), request)
+        content = response.content.decode('utf-8')
 
         self.assertEqual(response.status_code, 200)
+        self.assertIn('user', content)
+        self.assertIn('id', content)
+        self.assertIn(EMAIL, content)
+        self.assertNotIn(PASSWORD, content)
+        self.assertIn(FIRST_NAME, content)
+        self.assertIn(LAST_NAME, content)
+        self.assertIn(SCHOOL, content)
+        self.assertIn(ADDRESS, content)
+        self.assertIn(PHONE, content)
+        self.assertIn('token', content)
