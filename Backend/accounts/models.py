@@ -36,6 +36,7 @@ class UserManager(BaseUserManager):
     # Create superuser
     def create_superuser(self, email, password):
         user = self.create_user(email, password, 'admin', 'admin', 'admin', 'admin', 'admin')
+        user.is_active = True
         user.is_superuser = True
         user.is_staff = True
         user.save()
@@ -53,7 +54,7 @@ class User(AbstractBaseUser):
     phone = models.TextField(verbose_name='phone')
 
     # Below won't really be used by our project
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 

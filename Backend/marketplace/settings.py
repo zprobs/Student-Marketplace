@@ -127,10 +127,15 @@ AUTH_USER_MODEL = 'accounts.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated'
+        'rest_framework.permissions.AllowAny'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'knox.auth.TokenAuthentication',
     ),
     'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
 }
+
+# mailgun config
+EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
+MAILGUN_ACCESS_KEY = '4de789c8ac99a5c42547f472c53fc287-46ac6b00-bdf1800f'
+MAILGUN_SERVER_NAME = 'sandboxf972cffb99eb4acb8cf8b9dd9435e91a.mailgun.org'

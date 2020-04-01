@@ -27,7 +27,7 @@ class ModelsTestCases(TestCase):
         self.assertEqual(actual.school, SCHOOL)
         self.assertEqual(actual.address, ADDRESS)
         self.assertEqual(actual.phone, PHONE)
-        self.assertTrue(actual.is_active)
+        self.assertFalse(actual.is_active)
         self.assertFalse(actual.is_staff)
         self.assertFalse(actual.is_superuser)
 
@@ -84,23 +84,18 @@ class ViewsTestCases(TestCase):
         content = response.content.decode('utf-8')
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn('user', content)
-        self.assertIn('id', content)
-        self.assertIn(EMAIL, content)
-        self.assertNotIn(PASSWORD, content)
-        self.assertIn(FIRST_NAME, content)
-        self.assertIn(LAST_NAME, content)
-        self.assertIn(SCHOOL, content)
-        self.assertIn(ADDRESS, content)
-        self.assertIn(PHONE, content)
-        self.assertIn('token', content)
+        self.assertIn('success', content)
 
     def test_login_success(self):
-        User.objects.create_user(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, SCHOOL, ADDRESS, PHONE)
+        user = User.objects.create_user(EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, SCHOOL, ADDRESS, PHONE)
         request = {
             'username': EMAIL,
             'password': PASSWORD
         }
+
+        # activate account
+        user.is_active = True
+        user.save()
 
         response = self.client.post(reverse('login'), request)
         content = response.content.decode('utf-8')
