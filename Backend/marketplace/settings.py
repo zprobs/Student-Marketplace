@@ -137,5 +137,10 @@ REST_FRAMEWORK = {
 
 # mailgun config
 EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
-MAILGUN_ACCESS_KEY = '4de789c8ac99a5c42547f472c53fc287-46ac6b00-bdf1800f'
-MAILGUN_SERVER_NAME = 'sandboxf972cffb99eb4acb8cf8b9dd9435e91a.mailgun.org'
+MAILGUN_ACCESS_KEY = 'placeholder'
+# replace placeholder by combining line 1 and line 3
+# da1a8143d8502cecf70086f9
+# line - break
+# 11d79969-46ac6b00-5a443613
+# DO NOT COMMIT THIS FILE WITH THE FULL KEY, MAILGUN ACCOUNT WILL BE DEACTIVATED
+MAILGUN_SERVER_NAME = 'sandbox4beadcc7211347e3ba5dec8dfedc41d9.mailgun.org'
