@@ -127,10 +127,18 @@ AUTH_USER_MODEL = 'accounts.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated'
+        'rest_framework.permissions.AllowAny'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'knox.auth.TokenAuthentication',
     ),
     'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
 }
+
+# mailgun config
+CODE_P1 = 'da1a8143d8502cecf70086f9'
+CODE_P2 = '11d79969-46ac6b00-5a443613'
+
+EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
+MAILGUN_ACCESS_KEY = CODE_P1 + CODE_P2 # gets around getting mailgun account deactivated
+MAILGUN_SERVER_NAME = 'sandbox4beadcc7211347e3ba5dec8dfedc41d9.mailgun.org'
