@@ -5,7 +5,7 @@ import {Switch, Route} from 'react-router-dom';
 import Navbar from "./components/Navbar";
 import ProductList from "./components/ProductList";
 import Default from "./components/Default";
-import Cart from "./components/Cart";
+import Cart from "./components/Cart/Cart";
 import Details from "./components/Details";
 import Modal from "./components/Modal";
 class App extends Component {
