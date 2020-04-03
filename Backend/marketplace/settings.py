@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
     'accounts',
+    'listings',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +143,7 @@ CODE_P2 = '11d79969-46ac6b00-5a443613'
 EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
 MAILGUN_ACCESS_KEY = CODE_P1 + CODE_P2 # gets around getting mailgun account deactivated
 MAILGUN_SERVER_NAME = 'sandbox4beadcc7211347e3ba5dec8dfedc41d9.mailgun.org'
+
+# image upload config
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
