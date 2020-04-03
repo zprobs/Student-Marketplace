@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from knox.models import AuthToken
 from rest_framework import generics
 from rest_framework.response import Response
+from rest_framework import status
 
 from .emails import email_generator
 from .models import User
@@ -40,7 +41,7 @@ class RegisterView(generics.GenericAPIView):
 
         return Response({
             "registration": "success"
-        })
+        }, status=status.HTTP_201_CREATED)
 
 
 class LoginView(generics.GenericAPIView):
@@ -54,7 +55,7 @@ class LoginView(generics.GenericAPIView):
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)[1]
-        })
+        }, status=status.HTTP_200_OK)
 
 
 class ActivateView(generics.GenericAPIView):

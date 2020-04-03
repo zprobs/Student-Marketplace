@@ -83,7 +83,7 @@ class ViewsTestCases(TestCase):
         response = self.client.post(reverse('register'), request)
         content = response.content.decode('utf-8')
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
         self.assertIn('success', content)
 
     def test_login_success(self):
