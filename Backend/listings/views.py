@@ -23,6 +23,7 @@ class GetListingView(generics.GenericAPIView):
 
         return HttpResponse(json_content, content_type="application/json")
 
+
 # returns list of listings with count > 0, ordered by time created, newest first
 class GetAllActiveListingsView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated,)

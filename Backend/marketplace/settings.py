@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'knox',
     'accounts',
     'listings',
+    'transactions',
 ]
 
 MIDDLEWARE = [
