@@ -70,11 +70,12 @@ class UpdateListingView(generics.GenericAPIView, UpdateModelMixin):
         return Response({"update-listing": "success"})
 
 
-class DeleteListingView(generics.GenericAPIView):
+class RemoveListingView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, pk):
         listing = get_object_or_404(Listing, pk=pk)
-        listing.delete()
+        listing.is_active = False
+        listing.save()
 
-        return Response({"delete_listing": "success"})
+        return Response({"remove_listing": "success"})

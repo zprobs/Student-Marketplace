@@ -15,12 +15,11 @@ class ListingManager(models.Manager):
         return listing
 
     def active_listings(self):
-        listings = Listing.objects.select_related('seller').values('id', 'title', 'info', 'img', 'price', 'count',
-                                                                   'is_active', 'location', 'created_at', 'updated_at',
-                                                                   'seller__id', 'seller__first_name',
-                                                                   'seller__last_name', 'seller__email',
-                                                                   'seller__phone')
-        listings.filter(count__gt=0).order_by('created_at').reverse()
+        listings = Listing.objects.filter(count__gt=0).filter(is_active=True)\
+            .select_related('seller').values('id', 'title', 'info', 'img', 'price', 'count', 'is_active', 'location',
+                                             'created_at', 'updated_at', 'seller__id', 'seller__first_name',
+                                             'seller__last_name', 'seller__email', 'seller__phone')
+        listings.order_by('created_at').reverse()
 
         return listings
 
@@ -41,7 +40,7 @@ class Listing(models.Model):
     img = models.ImageField()
     price = models.FloatField()
     count = models.IntegerField()
-    is_active = models.BooleanField()
+    is_active = models.BooleanField(default=True)
     location = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
