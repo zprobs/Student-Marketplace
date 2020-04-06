@@ -6,7 +6,7 @@
 3. terminal: python3 install pip3
 4. cd to /Backend
 5. terminal: python3 -m venv
-6. terinal: source venv/bin/activate
+6. terminal: source venv/bin/activate
 7. terminal: pip3 install -r requirements.txt
 
 ### Running App
@@ -17,8 +17,7 @@
 1. See word doc (work in progress)
 
 ### Working on
-1. Tests for accounts app (i think we can cover 3 here to get the 10 marks)
-2. Posting app (to create posting, retrieve them.. etc.)
+-
 
 ### Useful apps
 1. Postman: to test APIs
@@ -26,3 +25,4 @@
 
 ### Useful guides
 1. knox authentication and react: https://medium.com/technest/implement-user-auth-in-a-django-react-app-with-knox-fc56cdc9211c
+2. simple chat: https://medium.com/@9cv9official/simple-chat-app-using-django-channel-ed5032b79b9c
