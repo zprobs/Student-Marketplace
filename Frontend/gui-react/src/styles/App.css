@@ -2,6 +2,7 @@
     --mainBlue: #2a2a72;
     --lightBlue: #009ffd;
     --mainWhite: #fafafa;
+    --lightWhite: #fcfcfc;
     --mainDark: #232528;
     --mainYellow: #ffa400;
 }
@@ -11,8 +12,9 @@ body {
 }
 
 .text-title {
-    font-family: "Apple Chancery";
-    letter-spacing: 0.3rem;
+    font-weight: 500;
+    font-family: 'Fira Sans', sans-serif;
+    letter-spacing: 0.1rem;
     text-transform: uppercase;
 }
 
