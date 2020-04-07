@@ -26,3 +26,4 @@
 ### Useful guides
 1. knox authentication and react: https://medium.com/technest/implement-user-auth-in-a-django-react-app-with-knox-fc56cdc9211c
 2. simple chat: https://medium.com/@9cv9official/simple-chat-app-using-django-channel-ed5032b79b9c
+3. image upload: https://medium.com/@emeruchecole9/uploading-images-to-rest-api-backend-in-react-js-b931376b5833
