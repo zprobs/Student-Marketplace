@@ -11,6 +11,7 @@ import Modal from "./components/Modal";
 import Chat from "./components/Chat";
 import Registration from "./components/Auth/Registration";
 import Login from "./components/Auth/Login"
+import Confirmation from "./components/Confirmation";
 
 class App extends Component {
     render() {
@@ -24,6 +25,7 @@ class App extends Component {
                     <Route path="/chat" component={Chat}/>
                     <Route path="/registration" component={Registration}/>
                     <Route path="/login" component={Login}/>
+                    <Route path="/confirmation" component={Confirmation}/>
                     <Route component={Default}/>
                 </Switch>
                 <Modal />

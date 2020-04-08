@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 class Registration extends Component {
 
@@ -11,9 +12,10 @@ class Registration extends Component {
             password:"",
             first_name:"",
             last_name:"",
-            phone_number:"",
+            phone:"",
             school:"",
             address:"",
+            redirect: null
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,20 +29,31 @@ class Registration extends Component {
     }
 
     handleSubmit(event) {
-        console.log("form submitted");
         console.log(JSON.stringify(this.state));
 
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.addEventListener('load', () => {
-            console.log(xhr.responseText);
+            if (xhr.responseText.includes('success')) {
+                this.setState({ redirect: "/confirmation" });
+            } else {
+                alert("There was an error in signing up, please use a valid McGill email and try again. Error: " + xhr.responseText);
+            }
         });
 
         xhr.open('POST', 'http://127.0.0.1:8000/auth/register');
-        xhr.send(JSON.stringify(this.state));
+        xhr.setRequestHeader("Content-type", "application/json");
+        const sender = JSON.stringify(this.state);
+        delete sender["redirect"];                  // using a field for redirection, do not want to send it to API
+        xhr.send(sender);
         event.preventDefault();
     }
 
     render() {
+
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+        }
+
         return (
             <div className="m-5 justify-content-md-center ">
 
@@ -69,7 +82,7 @@ class Registration extends Component {
 
                     <div className="form-group">
                         <label>Phone Number</label>
-                        <input type="tel" name="phone_number" className="form-control" placeholder="Phone Number" value={this.state.phone_number} onChange={this.handleChange} required  />
+                        <input type="tel" name="phone" className="form-control" placeholder="Phone Number" value={this.state.phone_number} onChange={this.handleChange} required  />
                     </div>
 
                     <div className="form-group">
