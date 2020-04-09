@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from marketplace.settings import MEDIA_URL, MEDIA_ROOT
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,3 +24,7 @@ urlpatterns = [
     path('listings/', include('listings.urls')),
     path('transactions/', include('transactions.urls'))
 ]
+
+# for retrieving image to display in FE
+# e.g. http://127.0.0.1:8000/media/3F725C57-6824-4875-8945-922E4E4A02EA_aMJgo2D.jpeg
+urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
