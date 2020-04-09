@@ -12,20 +12,38 @@ import Chat from "./components/Chat";
 import Registration from "./components/Auth/Registration";
 import Login from "./components/Auth/Login"
 import Confirmation from "./components/Confirmation";
+import Sell from "./components/Sell";
+import Cookies from "universal-cookie";
 
 class App extends Component {
+
+    constructor(props){
+        super(props);
+        let isAuthorized = false;
+        const cookies = new Cookies();
+        if (cookies.get('token') != null) {
+            isAuthorized = true;
+        }
+        this.state = {
+            auth: isAuthorized,
+        };
+        this.updateNav = this.updateNav.bind(this);
+    }
+
     render() {
         return (
             <React.Fragment>
-                <Navbar/>
+                <Navbar auth={this.state.auth}/>
                 <Switch>
                     <Route exact path="/" component={ProductList}/>
                     <Route path="/details" component={Details}/>
                     <Route path="/cart" component={Cart}/>
                     <Route path="/chat" component={Chat}/>
                     <Route path="/registration" component={Registration}/>
-                    <Route path="/login" component={Login}/>
+                    <Route path="/login" render={(props) => (<Login updateNav={this.updateNav} {...props}/>)} />
                     <Route path="/confirmation" component={Confirmation}/>
+                    <Route path="/sell" render={(props) => (<Sell auth={this.state.auth}/>)} />
+                    <Route path="/sell" component={Sell}/>
                     <Route component={Default}/>
                 </Switch>
                 <Modal />
@@ -34,6 +52,12 @@ class App extends Component {
 
         );
     }
+
+    updateNav = isAuth => {
+        this.setState({auth: isAuth});
+    }
 }
+
+
 
 export default App;

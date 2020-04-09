@@ -8,7 +8,8 @@ import  styled from 'styled-components';
 import {ButtonContainer} from "./Button";
 
 export default class Navbar extends Component {
-    render() {
+
+        render() {
         return (
            <NavWrapper className="navbar navbar-expand-sm navbar-light pl-sm-5">
                <Link to="/">
@@ -16,9 +17,19 @@ export default class Navbar extends Component {
                </Link>
                <ul className="navbar-nav align-items-center">
                    <li className="nav-item ml-5">
-                       <Link to="/" className="nav-link">
-                           Products
-                       </Link>
+                       {/* // show a different link depending on weather user is logged in or not */}
+
+                       { this.props.auth ?
+                           <Link to="/sell" className="nav-link">
+                               Sell Something
+                           </Link>
+                           :
+                           <Link to="/" className="nav-link">
+                               Products
+                           </Link>
+
+                       }
+
                    </li>
                </ul>
                <Link to='/cart' className="ml-auto">
@@ -44,3 +55,6 @@ export default class Navbar extends Component {
             text-transform: capitalize;
          }
     `;
+
+
+

@@ -17,6 +17,7 @@ class Login extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.updateNav = this.updateNav.bind(this);
     }
 
     handleChange(event) {
@@ -36,6 +37,7 @@ class Login extends Component {
                 cookies.set('id', response.user.id, { path: '/' });
                 cookies.set('first_name', response.user.first_name, { path: '/' });
                 cookies.set('last_name', response.user.last_name, { path: '/' });
+                this.updateNav(true);
 
                 this.setState({ redirect: "/" });
 
@@ -66,8 +68,15 @@ class Login extends Component {
         xhr.setRequestHeader("Authorization", "Token " + cookies.get('token') );
         xhr.send();
         cookies.remove('token');
+        this.updateNav(false);
         this.forceUpdate();
+    };
+
+    updateNav(isAuth) {
+        this.props.updateNav(isAuth);
     }
+
+
 
     render() {
 
@@ -115,5 +124,8 @@ class Login extends Component {
         );
     }
 }
+
+
+
 
 export default Login;
