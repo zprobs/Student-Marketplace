@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {storeProducts, detailProduct} from "./data";
+import {detailProduct} from "./data";
 
 const ProductContext = React.createContext();
 
+let listings = {};
 
 class ProductProvider extends Component {
     state={
@@ -21,21 +22,36 @@ class ProductProvider extends Component {
     }
 
     setProducts = () => {
-        let tempProducts = [];
-        storeProducts.forEach(item => {
-            const singleItem = {...item};       // Copy values to avoid manipulating data during frontend operations
-            tempProducts = [...tempProducts,singleItem];
 
+        const xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', () => {
+            listings = JSON.parse(xhr.responseText);
+            console.log(xhr.responseText);
+            let tempProducts = [];
+            listings.forEach(item => {
+                item.img = 'http://127.0.0.1:8000/media/' + item.img;
+                item.inCart = false;
+                item.count = 0;
+                item.total = 0;
+                const singleItem = {...item};       // Copy values to avoid manipulating data during frontend operations
+                tempProducts = [...tempProducts,singleItem];
+
+            });
+            this.setState(()=> {
+                return {
+                    products: tempProducts,
+                };
+            });
         });
-        this.setState(()=> {
-            return {products: tempProducts};
-        });
+
+        xhr.open('GET', 'http://127.0.0.1:8000/listings/get/active');
+        xhr.send();
     };
 
     getItem = (id) => {
         const product = this.state.products.find(item => item.id === id);
         return product;
-    }
+    };
 
     handleDetail = (id) => {
         const product = this.getItem(id);

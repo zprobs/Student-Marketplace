@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Cookies from "universal-cookie/cjs";
+import { Redirect } from "react-router-dom";
 
 class Sell extends Component {
 
@@ -7,30 +8,57 @@ class Sell extends Component {
         super(props);
 
         this.state = {
-            seller:"",
-            img:"",
-            detail:"",
             title:"",
             price:"",
             count:"",
             location:"",
             info:"",
-            is_active:false,
+            img: null
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleImage = this.handleImage.bind(this);
     }
 
-    handleSubmit(event) {
+    handleSubmit(data) {
      //   this.state.img = document.getElementById("inputImage").value;
+        data.preventDefault();
         const cookies = new Cookies();
         const user = cookies.get('id');
-        this.setState({
-            seller: user,
-            is_active: true
-        });
-        
+        const token = cookies.get('token');
+
+        const XHR = new XMLHttpRequest(), FD  = new FormData();
+        FD.append('img', this.state.img, this.state.img.name);
+        FD.append('seller', user);
+        FD.append('detail', "detail");
+        FD.append('title', this.state.title);
+        FD.append('price', this.state.price);
+        FD.append('count', this.state.count);
+        FD.append('location', this.state.location);
+        FD.append('info', this.state.info);
+        FD.append('is_active', "true");
+
+        // Define what happens on successful data submission
+        XHR.addEventListener( 'load', () => {
+            if (XHR.responseText.includes('success')) {
+                this.setState({ redirect: "/" });
+            } else {
+                alert("There was an error in listing this product. Error: " + XHR.responseText);
+            }
+        } );
+
+        // Define what happens in case of error
+        XHR.addEventListener(' error', () => {
+            alert( 'Oops! Something went wrong. Please try again.' );
+        } );
+
+        // Set up our request
+        XHR.open( 'POST', 'http://127.0.0.1:8000/listings/create' );
+
+        // Send our FormData object; HTTP headers are set automatically
+        XHR.setRequestHeader('Authorization', 'Token ' + token );
+        XHR.send( FD );
+
     console.log(JSON.stringify(this.state));
 
     }
@@ -43,12 +71,20 @@ class Sell extends Component {
 
     handleImage(event) {
         let imgName = document.getElementById("inputImage").files[0].name;
-        this.setState({img: imgName});
         document.getElementById("imageLabel").innerHTML = imgName;
+        this.setState({
+            img: event.target.files[0]
+        });
     }
 
 
     render() {
+
+
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+        }
+
         return (
             <div className="mx-auto my-4 w-75">
 

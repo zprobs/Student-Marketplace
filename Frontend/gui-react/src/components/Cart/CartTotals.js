@@ -29,7 +29,7 @@ export default function CartTotals({value}) {
                           <span className="text-title">
                               total :
                           </span>
-                          <strong>$ {cartTotal}</strong>
+                          <strong> $ {cartTotal}</strong>
                       </h5>
                   </div>
               </div>

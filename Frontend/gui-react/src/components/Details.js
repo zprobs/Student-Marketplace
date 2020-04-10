@@ -8,7 +8,8 @@ class Details extends Component {
         return (
             <ProductConsumer>
                 {value =>{
-                    const {id,seller,img,info,price,title,inCart} = value.detailProduct;
+                    const {id,seller__first_name,seller__last_name,seller__email,seller__phone,img,info,price,title,inCart,location} = value.detailProduct;
+                    const mailto = 'mailto:' + seller__email;
                     return (
                         <div className="container py-5">
                             {/* title */}
@@ -20,29 +21,38 @@ class Details extends Component {
                             {/* end title */}
                             {/* product info */}
                             <div className="row">
-                                <div className="col-10 mx-auto col-md-6 my-3">
+                                <div className="col-10 mx-auto col-md-5 my-3">
                                     <img src={img} className="img-fluid" alt="product"/>
                                 </div>
                                 {/* product text */}
-                                <div className="col-10 mx-auto col-md-6 my-3 text-capitalize">
-                                    <h2>model : {title}</h2>
+                                <div className="col-10 mx-auto col-md-5 my-3">
+                                    <h2>Meet-up Location : {location}</h2>
                                     <h4 className="text-title text-uppercase text-muted mt-3 mb-2">
                                          Listed by : <span className="text-uppercase">
-                                        {seller}
+                                        {seller__first_name} {seller__last_name}
                                     </span>
                                     </h4>
                                     <h4 className="text-blue">
                                         <strong>
-                                            price : <span>$</span>
+                                            Price : <span>$</span>
                                             {price}
                                         </strong>
                                     </h4>
                                     <p className="text-capitalize font-weight-bold mt-3 mb-0">
-                                        some info about product:
+                                        Some info about this product:
                                     </p>
                                     <p className="text-muted lead">
                                         {info}
                                     </p>
+
+                                    <h4>Contact Info:</h4>
+                                    <p className="mt-1">
+                                        <a href={mailto}>{seller__email}</a>
+                                    </p>
+                                    <p className="text-blue">
+                                        <strong>{seller__phone}</strong>
+                                    </p>
+
                                     {/* buttons */}
                                     <div>
                                         <Link to='/'>
