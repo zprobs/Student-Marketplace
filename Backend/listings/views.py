@@ -26,8 +26,6 @@ class GetListingView(generics.GenericAPIView):
 
 # returns list of listings with count > 0, ordered by time created, newest first
 class GetAllActiveListingsView(generics.GenericAPIView):
-    permission_classes = (IsAuthenticated,)
-
     def get(self, request):
         listings = Listing.objects.active_listings()
         json_content = json.dumps(list(listings), cls=DjangoJSONEncoder)
