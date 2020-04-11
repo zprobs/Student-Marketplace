@@ -5,7 +5,7 @@
 2. terminal: brew install python3
 3. terminal: python3 install pip3
 4. cd to /Backend
-5. terminal: python3 -m venv
+5. terminal: python3 -m venv venv
 6. terminal: source venv/bin/activate
 7. terminal: pip3 install -r requirements.txt
 
