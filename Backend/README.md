@@ -8,10 +8,12 @@
 5. terminal: python3 -m venv venv
 6. terminal: source venv/bin/activate
 7. terminal: pip3 install -r requirements.txt
+8. Install redis https://redis.io/topics/quickstart
 
 ### Running App
 1. cd to /Backend (folder contains manage.py)
 2. terminal: python3 manage.py runserver
+3. terminal: redis-server (this is needed for channels/chat)
 
 ### API Doc
 1. See word doc (work in progress)
