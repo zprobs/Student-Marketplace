@@ -46,9 +46,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
     'corsheaders',
+    'channels',
     'accounts',
     'listings',
     'transactions',
+    'chat'
 ]
 
 MIDDLEWARE = [
@@ -157,3 +159,14 @@ MAILGUN_SERVER_NAME = 'sandbox4beadcc7211347e3ba5dec8dfedc41d9.mailgun.org'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+# chat config
+ASGI_APPLICATION = 'marketplace.routing.application'
+
+CHANNEL_LAYERS = {
+    'default' : {
+        'BACKEND' : 'channels_redis.core.RedisChannelLayer',
+        'config' : {
+            'hosts' : [('127.0.0.1', 6379)],
+        }
+    }
+}
