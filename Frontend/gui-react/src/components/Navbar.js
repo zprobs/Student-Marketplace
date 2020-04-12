@@ -6,6 +6,7 @@ import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { faPortrait } from "@fortawesome/free-solid-svg-icons";
 import  styled from 'styled-components';
 import {ButtonContainer} from "./Button";
+import { ProductConsumer } from "../context";
 
 export default class Navbar extends Component {
 
@@ -29,8 +30,22 @@ export default class Navbar extends Component {
                            </Link>
 
                        }
-
                    </li>
+
+                       <ProductConsumer>
+                           {(value)=>{
+                              if (value.myListings.length > 0) {
+                                  return (
+                                      <li className="nav-item ml-5">
+                                      <Link to="/mylistings" className="nav-link">
+                                          My Listings
+                                      </Link>
+                                      </li>
+                                  )
+                              }
+                           }}
+                       </ProductConsumer>
+
                </ul>
                <Link to='/cart' className="ml-auto">
                    <ButtonContainer>

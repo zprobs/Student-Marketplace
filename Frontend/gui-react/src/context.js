@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {detailProduct} from "./data";
+import Cookies from "universal-cookie/cjs";
 
 const ProductContext = React.createContext();
 
@@ -15,6 +16,7 @@ class ProductProvider extends Component {
         cartSubTotal:0,
         cartTax:0,
         cartTotal:0,
+        myListings: [],
     };
 
     componentDidMount() {
@@ -22,24 +24,30 @@ class ProductProvider extends Component {
     }
 
     setProducts = () => {
-
+        const cookie = new Cookies();
+        const id = cookie.get('id');
         const xhr = new XMLHttpRequest();
         xhr.addEventListener('load', () => {
             listings = JSON.parse(xhr.responseText);
-            console.log(xhr.responseText);
             let tempProducts = [];
+            let myProducts = [];
             listings.forEach(item => {
                 item.img = 'http://127.0.0.1:8000/media/' + item.img;
                 item.inCart = false;
-                item.count = 0;
+                item.quantity = 0;
                 item.total = 0;
                 const singleItem = {...item};       // Copy values to avoid manipulating data during frontend operations
                 tempProducts = [...tempProducts,singleItem];
+                if (item.seller__id == id) {
+                    const myItem = {...item};
+                    myProducts = [...myProducts,myItem];
+                }
 
             });
             this.setState(()=> {
                 return {
                     products: tempProducts,
+                    myListings: myProducts,
                 };
             });
         });
@@ -88,14 +96,31 @@ class ProductProvider extends Component {
         })
     };
 
+    updateListing = (event, id, field) => {
+        let tempMyListings = [...this.state.myListings];
+        const selectedProduct = tempMyListings.find(item=>item.id === id.id); // using id.id because id is an object
+        const index = tempMyListings.indexOf(selectedProduct);
+        const product = tempMyListings[index];
+        product[field] = event.target.value;
+
+        this.setState(()=>{
+            return {myListings:[...tempMyListings]}
+        });
+
+    };
+
+    saveListing = () => {
+
+    }
+
     increment = (id) => {
         let tempCart = [...this.state.cart];
         const selectedProduct = tempCart.find(item=>item.id === id);
         const index = tempCart.indexOf(selectedProduct);
         const product = tempCart[index];
 
-        product.count =product.count + 1;
-        product.total = product.count * product.price;
+        product.quantity =product.quantity + 1;
+        product.total = product.quantity * product.price;
 
         this.setState(()=>{
             return {cart:[...tempCart]}
@@ -110,11 +135,11 @@ class ProductProvider extends Component {
         const index = tempCart.indexOf(selectedProduct);
         const product = tempCart[index];
 
-        product.count = product.count -1;
-        if (product.count === 0) {
+        product.quantity = product.quantity -1;
+        if (product.quantity === 0) {
             this.removeItem(id);
         } else {
-            product.total = product.count * product.price;
+            product.total = product.quantity * product.price;
             this.setState(()=>{
                 return {cart:[...tempCart]}
             },()=>{
@@ -132,7 +157,7 @@ class ProductProvider extends Component {
         const index = tempProducts.indexOf(this.getItem(id));
         let removedProduct = tempProducts[index];
         removedProduct.inCart = false;
-        removedProduct.count = 0;
+        removedProduct.quantity = 0;
         removedProduct.total = 0;
 
         this.setState(()=>{
@@ -143,6 +168,23 @@ class ProductProvider extends Component {
             this.addTotals();
         })
 
+    };
+
+    removeListing = (id) => {
+        let tempProducts = [...this.state.products];
+        let tempMyListings = [...this.state.myListings];
+
+        tempMyListings = tempMyListings.filter(item => item.id !== id);
+
+        const index = tempProducts.indexOf(this.getItem(id));
+        let removedProduct = tempProducts[index];
+        removedProduct.is_active = false;
+
+        this.setState(()=>{
+            return {
+                myListings:[...tempMyListings], product:[...tempProducts]
+            }
+        });
     };
 
     clearCart = () => {
@@ -174,6 +216,7 @@ class ProductProvider extends Component {
         return (
             <ProductContext.Provider value={{
                 ...this.state,
+                setProducts: this.setProducts,
                 handleDetail: this.handleDetail,
                 addToCart: this.addToCart,
                 openModal: this.openModal,
@@ -182,6 +225,8 @@ class ProductProvider extends Component {
                 decrement: this.decrement,
                 clearCart: this.clearCart,
                 removeItem: this.removeItem,
+                removeListing: this.removeListing,
+                updateListing: this.updateListing
             }}
             >
                 { this.props.children }
