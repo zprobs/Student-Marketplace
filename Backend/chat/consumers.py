@@ -13,6 +13,7 @@ class ChatConsumer(WebsocketConsumer):
         user = get_object_or_404(User, pk=data['user_id'])
         message = {
             'user_email': user.email,
+            'user_id': user.pk,
             'content': data['message']
         }
         content = {
