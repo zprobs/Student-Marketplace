@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Cookies from "universal-cookie/cjs";
 import { Redirect } from "react-router-dom";
+import { ProductConsumer } from "../context";
+import {Link} from 'react-router-dom';
 
 class Sell extends Component {
 
@@ -18,10 +20,10 @@ class Sell extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleImage = this.handleImage.bind(this);
+        this.updateNav = this.updateNav.bind(this);
     }
 
-    handleSubmit(data) {
-     //   this.state.img = document.getElementById("inputImage").value;
+    handleSubmit(data, setProduct) {
         data.preventDefault();
         const cookies = new Cookies();
         const user = cookies.get('id');
@@ -41,6 +43,8 @@ class Sell extends Component {
         // Define what happens on successful data submission
         XHR.addEventListener( 'load', () => {
             if (XHR.responseText.includes('success')) {
+                this.updateNav();
+                setProduct();
                 this.setState({ redirect: "/" });
             } else {
                 alert("There was an error in listing this product. Error: " + XHR.responseText);
@@ -77,6 +81,10 @@ class Sell extends Component {
         });
     }
 
+    updateNav() {
+        this.props.updateNav(true);
+    }
+
 
     render() {
 
@@ -87,50 +95,65 @@ class Sell extends Component {
 
         return (
             <div className="mx-auto my-4 w-75">
+                <ProductConsumer>
+                    {(value)=>{
+                        const {setProducts} = value;
+                        const {isAuth} = value;
+                        return (
+                            <div>
 
-            { this.props.auth ?
-                <form onSubmit={this.handleSubmit}>
-                    <h3>Sell a Product</h3>
-                    <div className="form-group">
-                        <label>Product Title</label>
-                        <input type="text" name="title" className="form-control" placeholder="Product Title" value={this.state.title} onChange={this.handleChange} required  />
-                    </div>
+                                { isAuth ?
+                                    <form onSubmit={(data) => {this.handleSubmit(data,setProducts)}}>
+                                        <h3>Sell a Product</h3>
+                                        <div className="form-group">
+                                            <label>Product Title</label>
+                                            <input type="text" name="title" className="form-control" placeholder="Product Title" value={this.state.title} onChange={this.handleChange} required  />
+                                        </div>
 
-                    <div className="form-group">
-                        <label>Information</label>
-                        <textarea name="info" className="form-control" placeholder="Information" value={this.state.info} onChange={this.handleChange} required  />
-                    </div>
+                                        <div className="form-group">
+                                            <label>Information</label>
+                                            <textarea name="info" className="form-control" placeholder="Some more details on your product" value={this.state.info} onChange={this.handleChange} required  />
+                                        </div>
 
-                    <div className="form-group">
-                        <label>Price</label>
-                        <input type="number" name="price" step="0.01" className="form-control" placeholder="Price" value={this.state.price} onChange={this.handleChange} required  />
-                    </div>
+                                        <div className="form-group">
+                                            <label>Price</label>
+                                            <input type="number" name="price" step="0.01" className="form-control" placeholder="Price" value={this.state.price} onChange={this.handleChange} required  />
+                                        </div>
 
-                    <div className="form-group">
-                        <label>Count</label>
-                        <input type="number"name="count" step="1"  className="form-control" placeholder="How many are you selling?" value={this.state.count} onChange={this.handleChange} required  />
-                    </div>
+                                        <div className="form-group">
+                                            <label>Count</label>
+                                            <input type="number"name="count" step="1"  className="form-control" placeholder="How many are you selling?" value={this.state.count} onChange={this.handleChange} required  />
+                                        </div>
 
-                    <div className="form-group">
-                        <label>Location</label>
-                        <input type="text" name="location" className="form-control" placeholder="Where would you like to sell it?" value={this.state.location} onChange={this.handleChange} required  />
-                    </div>
+                                        <div className="form-group">
+                                            <label>Location</label>
+                                            <input type="text" name="location" className="form-control" placeholder="Where would you like to sell it?" value={this.state.location} onChange={this.handleChange} required  />
+                                        </div>
 
-                    <div className="input-group mb-4">
-                        <div className="custom-file">
-                            <input type="file" className="custom-file-input" id="inputImage" accept="image/*" onChange={this.handleImage} />
-                                <label className="custom-file-label" htmlFor="inputGroupFile01" id="imageLabel">Upload Image</label>
-                        </div>
-                    </div>
+                                        <div className="input-group mb-4">
+                                            <div className="custom-file">
+                                                <input type="file" className="custom-file-input" id="inputImage" accept="image/*" onChange={this.handleImage} />
+                                                <label className="custom-file-label" htmlFor="inputGroupFile01" id="imageLabel">Upload Image</label>
+                                            </div>
+                                        </div>
 
-                    <button type="submit" className="btn btn-primary btn-block">List Product</button>
+                                        <button type="submit" className="btn btn-primary btn-block">List Product</button>
+
+                                    </form>
+
+                                    :
+                                    <div>
+                                        <h2>You must be signed in to sell something</h2>
+                                        <Link to="/login">Click here to Login</Link>
+                                    </div>
 
 
-                </form>
+                                }
+                            </div>
 
-                    :
-                    <h2>You must be signed in to sell something</h2>
-            }
+                        );
+                    }}
+                </ProductConsumer>
 
             </div>
         );

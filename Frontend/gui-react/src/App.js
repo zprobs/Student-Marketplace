@@ -15,6 +15,8 @@ import Confirmation from "./components/Confirmation";
 import Sell from "./components/Sell";
 import Cookies from "universal-cookie";
 import MyListings from "./components/MyListings";
+import Purchase from "./components/Purchase";
+import History from "./components/History";
 
 class App extends Component {
 
@@ -43,8 +45,10 @@ class App extends Component {
                     <Route path="/registration" component={Registration}/>
                     <Route path="/login" render={(props) => (<Login updateNav={this.updateNav} {...props}/>)} />
                     <Route path="/confirmation" component={Confirmation}/>
-                    <Route path="/sell" render={(props) => (<Sell auth={this.state.auth}/>)} />
+                    <Route path="/sell" render={() => (<Sell auth={this.state.auth} updateNav={this.updateNav}/>)} />
                     <Route path="/mylistings" component={MyListings}/>
+                    <Route path="/purchase" component={Purchase}/>
+                    <Route path="/history" component={History}/>
                     <Route component={Default}/>
                 </Switch>
                 <Modal />

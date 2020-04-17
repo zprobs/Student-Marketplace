@@ -17,6 +17,7 @@ class ProductProvider extends Component {
         cartTax:0,
         cartTotal:0,
         myListings: [],
+        isAuth: false
     };
 
     componentDidMount() {
@@ -48,6 +49,8 @@ class ProductProvider extends Component {
                 return {
                     products: tempProducts,
                     myListings: myProducts,
+                    cart: [],
+                    isAuth: (id != undefined) ? true : false
                 };
             });
         });
@@ -73,7 +76,7 @@ class ProductProvider extends Component {
         const index = tempProducts.indexOf(this.getItem(id));
         const product = tempProducts[index];
         product.inCart = true;
-        product.count = 1;
+        product.quantity = 1;
         const price = product.price;
         product.total = price;
         this.setState(()=> {
@@ -109,9 +112,6 @@ class ProductProvider extends Component {
 
     };
 
-    saveListing = () => {
-
-    }
 
     increment = (id) => {
         let tempCart = [...this.state.cart];
@@ -119,7 +119,7 @@ class ProductProvider extends Component {
         const index = tempCart.indexOf(selectedProduct);
         const product = tempCart[index];
 
-        product.quantity =product.quantity + 1;
+        product.quantity = product.quantity + 1;
         product.total = product.quantity * product.price;
 
         this.setState(()=>{
@@ -171,20 +171,23 @@ class ProductProvider extends Component {
     };
 
     removeListing = (id) => {
-        let tempProducts = [...this.state.products];
-        let tempMyListings = [...this.state.myListings];
+        const conf = window.confirm("This will delete your listing immediately. Are you sure you would like to remove it?");
+        if (conf) {
+            let cookie = new Cookies();
+            const token = cookie.get('token');
+            const xhr = new XMLHttpRequest();
+            xhr.addEventListener('load', () => {
+                if (xhr.responseText.includes('success')) {
+                    this.setProducts();
+                } else {
+                    alert("There was an error removing this listing: " + xhr.responseText);
+                }
 
-        tempMyListings = tempMyListings.filter(item => item.id !== id);
-
-        const index = tempProducts.indexOf(this.getItem(id));
-        let removedProduct = tempProducts[index];
-        removedProduct.is_active = false;
-
-        this.setState(()=>{
-            return {
-                myListings:[...tempMyListings], product:[...tempProducts]
-            }
-        });
+            });
+            xhr.open('POST', 'http://127.0.0.1:8000/listings/remove/' + id + "/");
+            xhr.setRequestHeader('Authorization' , 'Token ' + token);
+            xhr.send();
+        }
     };
 
     clearCart = () => {
@@ -226,7 +229,7 @@ class ProductProvider extends Component {
                 clearCart: this.clearCart,
                 removeItem: this.removeItem,
                 removeListing: this.removeListing,
-                updateListing: this.updateListing
+                updateListing: this.updateListing,
             }}
             >
                 { this.props.children }

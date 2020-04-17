@@ -6,7 +6,9 @@ import {ProductConsumer} from "../../context";
 import CartList from "./CartList";
 import CartTotals from "./CartTotals";
 class Cart extends Component {
+
     render() {
+
         return (
             <section>
                 <ProductConsumer>
@@ -16,7 +18,7 @@ class Cart extends Component {
                             return (
                                 <React.Fragment>
                                     <Title name="your" title="cart" />
-                                    <CartColumns seller={false}/>
+                                    <CartColumns seller={false} history={false}/>
                                     <CartList value = {value} />
                                     <CartTotals value = {value}/>
                                 </React.Fragment>
@@ -31,6 +33,9 @@ class Cart extends Component {
 
         );
     }
+
+
+
 }
 
 export default Cart;

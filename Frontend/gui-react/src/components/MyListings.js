@@ -50,7 +50,7 @@ class MyListings extends Component {
                             return (
                                 <React.Fragment>
                                     <Title name="My" title="Listings" />
-                                    <CartColumns seller={true}/>
+                                    <CartColumns seller={true} history={false}/>
 
                                     <div className="container-fluid">
                                         {myListings.map(item=>{
@@ -76,7 +76,6 @@ class MyListings extends Component {
         let success = true;
         let xhr = new XMLHttpRequest();
         let errorMsg = "";
-        let listCount = myListings.count;
         xhr.addEventListener('load', () => {
             if (!xhr.responseText.includes('success')) {
                 success = false;
@@ -84,18 +83,16 @@ class MyListings extends Component {
                 errorMsg += xhr.responseText;
             }
             // only set the state and view errors after all requests have been received
-            listCount--;
-            if (listCount === 0) {
-                if (success) {
-                    this.setState({ redirect: "/" });
-                    setProducts();
-                } else {
-                    alert("There was an error in updating one of your listings: " + errorMsg);
-                }
+            if (success) {
+                this.setState({ redirect: "/" });
+                setProducts();
+            } else {
+                alert("There was an error in updating one of your listings: " + errorMsg);
             }
         });
 
         myListings.map((listing) => {
+            console.log(listing.id);
             xhr.open('PUT', 'http://127.0.0.1:8000/listings/update/' + listing.id + '/');
             xhr.setRequestHeader("Content-type", "application/json");
             xhr.setRequestHeader('Authorization', 'Token ' + this.state.token );

@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 export default function CartList({item,value}) {
-    const{id,title,img,price,total,count} = item;
+    const{id,title,img,price,total,count,quantity} = item;
     const {increment,decrement,removeItem} = value;
     return (
         <div className="row my-2 text-capitalize text-center">
@@ -14,16 +14,18 @@ export default function CartList({item,value}) {
                 {title}
             </div>
             <div className="col-10 mx-auto col-lg-2">
-                <span className="d-lg-none">product: </span>
+                <span className="d-lg-none">price: </span>
                 {price}
             </div>
             <div className="col-10 mx-auto col-lg-2 my-2 my-lg-0">
                 <div className="d-flex justify-content-center">
                     <div>
                         <span className="btn btn-black mx-1" onClick={()=>decrement(id)}>-</span>
-                        <span className="btn btn-black mx-1" >{count}</span>
-                        <span className="btn btn-black mx-1" onClick={()=>increment(id)}>+</span>
-
+                        <span className="btn btn-black mx-1" >{quantity}</span>
+                        {(count - quantity > 0) ?
+                            <span className="btn btn-black mx-1" onClick={() => increment(id)}>+</span>
+                            : null
+                        }
                     </div>
                 </div>
             </div>

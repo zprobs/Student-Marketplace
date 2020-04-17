@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import Cookies from 'universal-cookie';
 import { Redirect } from "react-router-dom";
+import {ProductConsumer} from "../../context";
 
 
 class Login extends Component {
@@ -26,7 +27,7 @@ class Login extends Component {
         })
     }
 
-    handleSubmit(event) {
+    handleSubmit(event, setProducts) {
         let xhr = new XMLHttpRequest();
         xhr.addEventListener('load', () => {
             console.log(xhr.responseText);
@@ -37,8 +38,8 @@ class Login extends Component {
                 cookies.set('id', response.user.id, { path: '/' });
                 cookies.set('first_name', response.user.first_name, { path: '/' });
                 cookies.set('last_name', response.user.last_name, { path: '/' });
-                this.updateNav(true);
-
+                setProducts();
+             //   this.updateNav(true);
                 this.setState({ redirect: "/" });
 
             } else {
@@ -58,7 +59,7 @@ class Login extends Component {
         event.preventDefault();
     }
 
-    sign_out = () => {
+    sign_out = (setProducts) => {
         const cookies = new Cookies();
         cookies.remove('id');
         cookies.remove('first_name');
@@ -68,7 +69,8 @@ class Login extends Component {
         xhr.setRequestHeader("Authorization", "Token " + cookies.get('token') );
         xhr.send();
         cookies.remove('token');
-        this.updateNav(false);
+       // this.updateNav(false);
+        setProducts();
         this.forceUpdate();
     };
 
@@ -80,48 +82,62 @@ class Login extends Component {
 
     render() {
 
-        if (this.state.redirect) {
-            return <Redirect to={this.state.redirect} />
-        }
-
-        const cookies = new Cookies();
-        if (cookies.get('token') != null) {
-            return (
-
-                <div className="m-5 mx-auto w-50">
-                    <h3>It appears you are already signed in. Would you like to log out?</h3>
-                    <button className="btn btn-primary btn-block" onClick={this.sign_out}>Yes</button>
-                    <Link to='/'>
-                        <button className="btn btn-block btn-dark mt-1">No</button>
-                    </Link>
-                </div>
-            )
-        }
         return (
-            <div className="m-5 justify-content-md-center ">
 
-                <form onSubmit={this.handleSubmit}>
-                    <h3>Login</h3>
+            <ProductConsumer>
+                {(value)=>{
+                    const {setProducts} = value;
+                    const cookies = new Cookies();
+
+                    if (this.state.redirect) {
+                        return <Redirect to={this.state.redirect} />
+                    } else if (cookies.get('token') != null) {
+                        return (
+
+                            <div className="m-5 mx-auto w-50">
+                                <h3>It appears you are already signed in. Would you like to log out?</h3>
+                                <button className="btn btn-primary btn-block" onClick={ () => this.sign_out(setProducts)}>Yes</button>
+                                <Link to='/'>
+                                    <button className="btn btn-block btn-dark mt-1">No</button>
+                                </Link>
+                            </div>
+
+                        );
+                    } else {
+                        return (
 
 
-                    <div className="form-group">
-                        <label>Email address</label>
-                        <input type="email" name="email" className="form-control" placeholder="Enter email" value={this.state.email} onChange={this.handleChange} required  />
-                    </div>
+                            <div className="m-5 justify-content-md-center ">
 
-                    <div className="form-group">
-                        <label>Password</label>
-                        <input type="password" name="password" className="form-control" placeholder="Enter password" value={this.state.password} onChange={this.handleChange} required  />
-                    </div>
+                                <form onSubmit={(event) => this.handleSubmit(event, setProducts)}>
+                                    <h3>Login</h3>
 
-                    <button type="submit" className="btn btn-primary btn-block">Login</button>
 
-                </form>
-                <p className="forgot-password text-right">
-                    Want to create an account? <Link to="/registration">Sign up</Link>
-                </p>
-            </div>
+                                    <div className="form-group">
+                                        <label>Email address</label>
+                                        <input type="email" name="email" className="form-control" placeholder="Enter email"
+                                               value={this.state.email} onChange={this.handleChange} required/>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Password</label>
+                                        <input type="password" name="password" className="form-control" placeholder="Enter password"
+                                               value={this.state.password} onChange={this.handleChange} required/>
+                                    </div>
+
+                                    <button type="submit" className="btn btn-primary btn-block">Login</button>
+
+                                </form>
+                                <p className="forgot-password text-right">
+                                    Want to create an account? <Link to="/registration">Sign up</Link>
+                                </p>
+                            </div>
+                        )
+                    }
+                }}
+            </ProductConsumer>
         );
+
     }
 }
 

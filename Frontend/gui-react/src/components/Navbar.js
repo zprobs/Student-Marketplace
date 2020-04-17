@@ -11,55 +11,74 @@ import { ProductConsumer } from "../context";
 export default class Navbar extends Component {
 
         render() {
-        return (
-           <NavWrapper className="navbar navbar-expand-sm navbar-light pl-sm-5">
-               <Link to="/">
-                   <img src={logo} alt="Logo" style={{width:80}} className="navbar-brand"/>
-               </Link>
-               <ul className="navbar-nav align-items-center">
-                   <li className="nav-item ml-5">
-                       {/* // show a different link depending on weather user is logged in or not */}
+            return (
+                <ProductConsumer>
+                    {(value)=>{
+                        const {isAuth} = value;
+                        return (
 
-                       { this.props.auth ?
-                           <Link to="/sell" className="nav-link">
-                               Sell Something
-                           </Link>
-                           :
-                           <Link to="/" className="nav-link">
-                               Products
-                           </Link>
+                            <NavWrapper className="navbar navbar-expand-sm navbar-light pl-sm-5">
 
-                       }
-                   </li>
 
-                       <ProductConsumer>
-                           {(value)=>{
-                              if (value.myListings.length > 0) {
-                                  return (
-                                      <li className="nav-item ml-5">
-                                      <Link to="/mylistings" className="nav-link">
-                                          My Listings
-                                      </Link>
-                                      </li>
-                                  )
-                              }
-                           }}
-                       </ProductConsumer>
+                                <Link to="/">
+                                    <img src={logo} alt="Logo" style={{width:80}} className="navbar-brand"/>
+                                </Link>
+                                <ul className="navbar-nav align-items-center">
+                                    <li className="nav-item ml-5">
+                                        {/* // show a different link depending on weather user is logged in or not */}
 
-               </ul>
-               <Link to='/cart' className="ml-auto">
-                   <ButtonContainer>
+                                        { isAuth ?
+                                            <Link to="/sell" className="nav-link">
+                                                Sell Something
+                                            </Link>
+                                            :
+                                            <Link to="/" className="nav-link">
+                                                Products
+                                            </Link>
+
+                                        }
+                                    </li>
+
+
+                                    { (value.myListings.length > 0) ?
+
+                                    <li className="nav-item ml-5">
+                                        <Link to="/mylistings" className="nav-link">
+                                            My Listings
+                                        </Link>
+                                    </li>
+                                        :
+                                        null
+                                    }
+
+
+                                    { isAuth ?
+                                        <li className="nav-item ml-5">
+                                            <Link to="/history" className="nav-link">
+                                                History
+                                            </Link>
+                                        </li>
+                                        :
+                                        null
+                                    }
+
+                                </ul>
+                                <Link to='/cart' className="ml-auto">
+                                    <ButtonContainer>
                        <span className="mr-2">
                         <FontAwesomeIcon icon={faCartPlus} />
                        </span>
-                        My Cart
-                   </ButtonContainer>
-               </Link>
-               <Link to='/login' className="ml-2">
-                   <FontAwesomeIcon icon={faPortrait} className="fa-3x"/>
-               </Link>
-           </NavWrapper>
-        );
+                                        My Cart
+                                    </ButtonContainer>
+                                </Link>
+                                <Link to='/login' className="ml-2">
+                                    <FontAwesomeIcon icon={faPortrait} className="fa-3x"/>
+                                </Link>
+                            </NavWrapper>
+                        );
+                    }}
+                </ProductConsumer>
+            );
     }
 }
     const NavWrapper = styled.nav`

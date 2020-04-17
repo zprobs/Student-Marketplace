@@ -7,7 +7,7 @@ export default function CartTotals({value}) {
       <React.Fragment>
           <div className="container">
               <div className="row">
-                  <div className="col-10 mt-2 ml-sm-5 ml md-auto col-sm-8 text-capitalize text-right">
+                  <div className="col-10 mt-2 ml-auto col-sm-8 text-capitalize text-right">
                     <Link to="/">
                         <button className="btn btn-outline-danger text-uppercase mb-3 px-5" type="button" onClick={()=>clearCart()}>
                             clear cart
@@ -31,7 +31,13 @@ export default function CartTotals({value}) {
                           </span>
                           <strong> $ {cartTotal}</strong>
                       </h5>
+                      <Link to="/purchase" >
+                      <button className="btn btn-outline-success text-uppercase mt-3 px-5" type="button">
+                          enter shipping information
+                      </button>
+                      </Link>
                   </div>
+
               </div>
           </div>
       </React.Fragment>
