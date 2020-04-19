@@ -4,6 +4,50 @@ Final assignment for McGill Comp 307 - Introduction to Web development. A market
 ## Authors
 Zachary Probst, Steven Shao and Trisha Winterson Chagnon
 
+
+
+## Set up Instructions
+
+
+1.    Frontend (react)
+
+a.     Install node.js (> 12.16.1) , npm (> 6.13.4)
+
+b.   install dependencies in Frontend/gui-react/package.json using npm install 
+
+c.   run frontend application on localhost:3000 using npm start (in gui-react folder)
+
+2.    Backend
+
+a.    Assume already installed: python3, redis, pip3
+
+b.    Install dependencies: (we have included venv, so please try skipping this step)
+
+                                      i.     Cd to /Backend (then the following in terminal)
+
+                                    ii.     python3 -m venv venv
+
+                                   iii.     source venv/bin/activate
+
+                                   iv.     pip3 install requirements.txt
+
+c.     To run (in terminal):
+
+                                      i.     redis-server
+
+                                    ii.     python3 manage.py runserver
+
+3.    Login:
+
+a.    Because mailgun is configured to our emails, you cannot register properly. Please email me (steven.shao@mail.mcgill.ca) so I can add you to mailgun.
+
+b.    You can login to our app with existing user:
+
+                                      i.     Username: steven.shao@mail.mcgill.ca
+
+                                    ii.     Password: password
+
+
 ## Design Doc
 
 ### Business Problem
